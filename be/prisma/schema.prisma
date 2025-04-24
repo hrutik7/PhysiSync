@@ -1,0 +1,508 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CLINIC
+  CORPORATE
+  INDIVIDUAL
+}
+
+model User {
+  id                             String                           @id @default(uuid())
+  DoctorName                     String
+  password                       String
+  hospital                       Hospoital[]
+  email                          String?                          @unique
+  name                           String
+  contact                        String
+  role                           String
+  subRole                        String?
+  interventiondiagnosis          InterventionDiagnosis[]
+  interventiontreatmentencounter InterventionTreatmentEncounter[]
+  interventiongoals              InterventionGoals[]
+  interventiontreatmentprotocols InterventionTreatmentProtocols[]
+  interventiontreatmentprotocol  InterventionTreatmentProtocol[]
+  investigationpatient           Investigationpatient[]
+  history                        History[]
+  chiefcomplaint                 ChiefComplaint[]
+  painsevirity                   Pain[]
+  examination                    Examination[]
+  motorexamination               MotorExamination[]
+  sensoryexamination             SensoryExamination[]
+  pediatric                      Pediatric[]
+  subjective                     Subjective[]
+  objective                      Objective[]
+  assesment                      Assesment[]
+  plan                           Plan[]
+  AXtemplate                     AX[]
+  CustomAX                       CustomAX[]
+  // Investigation        Investigation[]
+  Intervention                   Intervention[]
+  patients                       Patient[]
+  axhipAssesment                 AXhipAssesment[]
+  axkneeAssesment                AXkneeAssesment[]
+  axShoulderAssesment            AXShoulderAssesment[]
+  axFootAssesment                AXFootAssesment[]
+  aiAssistant                    AiAssistant[]
+}
+
+model Hospoital {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  contact   String
+  email     String?  @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+}
+
+model InterventionTreatmentEncounter {
+  id String @id @default(uuid())
+
+  date                 String
+  time                 String
+  treatmenttype        String
+  duration             String
+  subjectiveassessment String
+  treatmentprovided    String
+  progressnotes        String
+  price                String
+  patient              Patient  @relation(fields: [patientId], references: [id])
+  patientId            String // ✅ correct camelCase
+  doctor               User     @relation(fields: [doctorId], references: [id])
+  doctorId             String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model InterventionTreatmentProtocol {
+  id String @id @default(uuid())
+
+  status           Boolean
+  date             String
+  treatment        String
+  numberofsessions String
+  price            String
+  goal             String   @default("")
+  patient          Patient  @relation(fields: [patientId], references: [id])
+  patientId        String // ✅ correct camelCase
+  doctor           User     @relation(fields: [doctorId], references: [id])
+  doctorId         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model InterventionTreatmentProtocols {
+  id String @id @default(uuid())
+
+  dates            String
+  treatment        String
+  numberofsessions String
+  price            String
+  patient          Patient  @relation(fields: [patientId], references: [id])
+  patientId        String // ✅ correct camelCase
+  doctor           User     @relation(fields: [doctorId], references: [id])
+  doctorId         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model InterventionGoals {
+  id String @id @default(uuid())
+
+  date            String
+  goaltype        String
+  goaldescription String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  patientId       String // ✅ correct camelCase
+  doctor          User     @relation(fields: [doctorId], references: [id])
+  doctorId        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model InterventionDiagnosis {
+  id String @id @default(uuid())
+
+  date      String
+  diagnosis String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String // ✅ correct camelCase
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Investigationpatient {
+  id          String  @id @default(uuid())
+  patient     Patient @relation(fields: [patientId], references: [id])
+  patientId   String // ✅ correct camelCase
+  doctor      User    @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  date        String
+  reporttype  String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // File storage fields
+  files     File[]
+}
+
+model File {
+  id              String               @id @default(uuid())
+  fileName        String
+  originalName    String
+  path            String
+  mimetype        String
+  size            Int
+  investigationId String
+  investigation   Investigationpatient @relation(fields: [investigationId], references: [id])
+}
+
+model History {
+  id                       String  @id @default(uuid())
+  age                      String
+  gender                   String
+  occupation               String
+  previosmedicalconditions String
+  previossurgery           String
+  currentmedication        String
+  physicalactivitylevel    String
+  sleeppattern             String
+  smoking                  String
+  patient                  Patient @relation(fields: [patientId], references: [id])
+  patientId                String // ✅ correct camelCase
+  doctor                   User    @relation(fields: [doctorId], references: [id])
+  doctorId                 String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChiefComplaint {
+  id String @id @default(uuid())
+
+  primarycomplaint String
+  onset            String
+  duration         String
+  assosiatedsymtom String
+  patient          Patient @relation(fields: [patientId], references: [id])
+  patientId        String // ✅ correct camelCase
+  doctor           User    @relation(fields: [doctorId], references: [id])
+  doctorId         String
+}
+
+model Pain {
+  id              String   @id @default(uuid())
+  date            String
+  painsite        String
+  painsevirity    String
+  painnature      String
+  painonset       String
+  painduration    String
+  painside        String
+  paintrigger     String
+  painadl         String
+  painDiurnal     String
+  painAggravating String
+  painRelieving   String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  patientId       String // ✅ correct camelCase
+  doctor          User     @relation(fields: [doctorId], references: [id])
+  doctorId        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Examination {
+  id String @id @default(uuid())
+
+  posture             String
+  gaitpattern         String
+  flexion             String
+  extension           String
+  lateralflexionright String
+  lateralflexionleft  String
+  rotationright       String
+  rotationleft        String
+  patient             Patient  @relation(fields: [patientId], references: [id])
+  patientId           String // ✅ correct camelCase
+  doctor              User     @relation(fields: [doctorId], references: [id])
+  doctorId            String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model MotorExamination {
+  id                String   @id @default(uuid())
+  shoulderflexer    String
+  shoulderextensors String
+  elbowflexer       String
+  elbowextensors    String
+  wristextensors    String
+  wristflexer       String
+  hipflexer         String
+  hiprextensors     String
+  kneeflexer        String
+  kneeextensors     String
+  ankleextensors    String
+  ankleflexer       String
+  muscletone        String
+  patient           Patient  @relation(fields: [patientId], references: [id])
+  patientId         String // ✅ correct camelCase
+  doctor            User     @relation(fields: [doctorId], references: [id])
+  doctorId          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model SensoryExamination {
+  id                  String   @id @default(uuid())
+  touchsensation      String
+  painsensation       String
+  tempraturesensation String
+  positivesense       String
+  vibrationsense      String
+  patient             Patient  @relation(fields: [patientId], references: [id])
+  patientId           String // ✅ correct camelCase
+  doctor              User     @relation(fields: [doctorId], references: [id])
+  doctorId            String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Pediatric {
+  id               String   @id @default(uuid())
+  grossmotorskills String
+  finemotorskills  String
+  primitivereflex  String
+  posturalreflex   String
+  balanceandcoord  String
+  patient          Patient  @relation(fields: [patientId], references: [id])
+  patientId        String // ✅ correct camelCase
+  doctor           User     @relation(fields: [doctorId], references: [id])
+  doctorId         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model AXhipAssesment {
+  id           String   @id @default(uuid())
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String // ✅ correct camelCase
+  doctor       User     @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  diagnosis    String
+  treatment    String
+  action       String
+  date         String
+  painsevirity String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AXkneeAssesment {
+  id           String   @id @default(uuid())
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String // ✅ correct camelCase
+  doctor       User     @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  diagnosis    String
+  treatment    String
+  action       String
+  date         String
+  painsevirity String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AXShoulderAssesment {
+  id           String   @id @default(uuid())
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String // ✅ correct camelCase
+  doctor       User     @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  diagnosis    String
+  treatment    String
+  action       String
+  date         String
+  painsevirity String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AXFootAssesment {
+  id           String   @id @default(uuid())
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    String // ✅ correct camelCase
+  doctor       User     @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  diagnosis    String
+  treatment    String
+  action       String
+  date         String
+  painsevirity String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Subjective {
+  id        String   @id @default(uuid())
+  content   String
+  date      DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String // ✅ correct camelCase
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Objective {
+  id        String   @id @default(uuid())
+  content   String
+  date      DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String // ✅ correct camelCase
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Assesment {
+  id        String   @id @default(uuid())
+  content   String
+  date      DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String // ✅ correct camelCase
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Plan {
+  id        String   @id @default(uuid())
+  content   String
+  date      DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String // ✅ correct camelCase
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AX {
+  id          String   @id @default(uuid())
+  doctor      User     @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CustomAX {
+  id          String   @id @default(uuid())
+  doctor      User     @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// model Investigation {
+//   id          String   @id @default(uuid())
+//   doctor      User     @relation(fields: [doctorId], references: [id])
+//   doctorId    String
+//   title       String
+//   description String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//   File        File[]
+// }
+
+model Intervention {
+  id          String   @id @default(uuid())
+  doctor      User     @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Patient {
+  id          String  @id @default(uuid())
+  patientId   String  @unique // This will store P001, P002, etc.
+  name        String
+  age         Int
+  gender      String
+  contact     String
+  referral    String?
+  patientType String?
+  aadharCard  String?
+
+  createdAt                      DateTime                         @default(now())
+  updatedAt                      DateTime                         @updatedAt
+  doctor                         User                             @relation(fields: [doctorId], references: [id])
+  doctorId                       String
+  subjectives                    Subjective[] // Added opposite relation field
+  Objective                      Objective[]
+  Assesment                      Assesment[]
+  Plan                           Plan[]
+  AXFootAssesment                AXFootAssesment[]
+  AXShoulderAssesment            AXShoulderAssesment[]
+  AXkneeAssesment                AXkneeAssesment[]
+  AXhipAssesment                 AXhipAssesment[]
+  History                        History[]
+  ChiefComplaint                 ChiefComplaint[]
+  Pain                           Pain[]
+  Examination                    Examination[]
+  MotorExamination               MotorExamination[]
+  SensoryExamination             SensoryExamination[]
+  Pediatric                      Pediatric[]
+  InterventionDiagnosis          InterventionDiagnosis[]
+  InterventionGoals              InterventionGoals[]
+  InterventionTreatmentProtocols InterventionTreatmentProtocols[]
+  InterventionTreatmentProtocol  InterventionTreatmentProtocol[]
+  InterventionTreatmentEncounter InterventionTreatmentEncounter[]
+  Investigationpatients          Investigationpatient[] // Added opposite relation field
+  aiAssistant                    AiAssistant[]
+}
+
+model AiAssistant {
+  id          String   @id @default(uuid())
+  exercise    Json
+  diet        Json
+  hometherapy Json
+  additional  Json
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  patientId   String // ✅ correct camelCase
+  doctor      User     @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
