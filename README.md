@@ -75,7 +75,7 @@ Used voice-first design so physiotherapists can focus on healing, not screens.
 - Frontend: react js , tailwind , shadcn e.t.c
 - Backend: nodejs , express , prisma ORM
 - Database: postgress 
-- APIs: 
+- APIs: groq , web speech , vapi , twillio , e.t.c
 - Hosting: vercel , railway 
 
 ### Sponsor Technologies Used (if any):
