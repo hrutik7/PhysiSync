@@ -111,7 +111,7 @@ Used voice-first design so physiotherapists can focus on healing, not screens.
 - **Pitch Deck / PPT Link:** [PPT](https://www.canva.com/design/DAGljRD_Css/slmX0EE4sTTh4PCHdZ056w/view#1)
 - **Product Demo Link:** : [doctor portal](https://app.physisync.com)
 
-   [patient portal](https://ai.physisync.com)
+   [patient portal](https://ai.physisync.com)   (if this is not showing anything just clear the cookies )
   
 credentials for doctor :
 Email : ram@gmail.com
