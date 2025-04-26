@@ -109,11 +109,15 @@ Used voice-first design so physiotherapists can focus on healing, not screens.
 
 - **Demo Video Link:** [demo](https://www.youtube.com/watch?v=4Oyn7u9E0UM)  
 - **Pitch Deck / PPT Link:** [PPT](https://www.canva.com/design/DAGljRD_Css/slmX0EE4sTTh4PCHdZ056w/view#1)
-- **Product Demo Link:** : [doctor portal](https://app.physisync.com) [patient portal](https://app.physisync.com)  
+- **Product Demo Link:** : [doctor portal](https://app.physisync.com)
+
+   [patient portal](https://ai.physisync.com)
+  
 credentials for doctor :
 Email : ram@gmail.com
 password : ram@123
-right now auth is not set for patient  :
+
+right now auth is not set for patient  : you just have to click on sign in 
 ---
 
 ## ✅ Tasks & Bonus Checklist
