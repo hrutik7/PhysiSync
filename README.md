@@ -83,7 +83,7 @@ Used voice-first design so physiotherapists can focus on healing, not screens.
 - [ ] **Monad:** _Your blockchain implementation_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
-- [ ] **Screenpipe:** _Screen-based analytics or workflows_  
+- [✅ ] **Screenpipe:** _Screen-based analytics or workflows_  
 - [ ] **Stellar:** _Payments, identity, or token usage_
 
 ---
@@ -101,6 +101,12 @@ Used voice-first design so physiotherapists can focus on healing, not screens.
 
 - ✅  voice based EHR ( patient diagnosis record system )
   ![Screenshot 2025-04-24 203959](https://github.com/user-attachments/assets/19d110a1-3a38-4505-a132-183c22f8c4ad)
+
+- ✅ add patient automation through screenpipe (if ortho give the report to the physio department)
+  ![Screenshot 2025-05-04 172944](https://github.com/user-attachments/assets/b27e0884-b7a7-4f77-b1cf-fddbc040ae2a)
+
+- ✅ custom ai followup (based on the context of the recovery we want to make sure patient visit the clinic)
+  ![image](https://github.com/user-attachments/assets/1eafcaa4-b626-413d-9f51-5b650a61ba0e)
 
 
 ---
